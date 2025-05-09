@@ -1,0 +1,6 @@
+@ApiNgMovies_HostAddress = http://localhost:5286
+
+GET {{ApiNgMovies_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
