@@ -1,5 +1,6 @@
 ﻿using ApiNgMovies.Entidades;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 
 namespace ApiNgMovies.Controllers
 {
@@ -7,6 +8,7 @@ namespace ApiNgMovies.Controllers
     public class GenerosController : ControllerBase
     {
         [HttpGet]
+        [OutputCache]
         public List<Genero> Get()
         {
             var repositorio = new Memoria();
@@ -15,6 +17,7 @@ namespace ApiNgMovies.Controllers
         }
 
         [HttpGet("{id:int}")]
+        [OutputCache]
         public async Task<ActionResult<Genero>> Get(int id)
         {
             var repositorio = new Memoria();
@@ -26,6 +29,7 @@ namespace ApiNgMovies.Controllers
         }
         
         [HttpGet("{nombre}")]
+        [OutputCache]
         public async Task<ActionResult<Genero>> Get(string nombre)
         {
             var repositorio = new Memoria();
@@ -35,7 +39,6 @@ namespace ApiNgMovies.Controllers
                 return NotFound();
             }
             return genero;
-            
         }
     }
 }
