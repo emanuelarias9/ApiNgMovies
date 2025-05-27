@@ -23,12 +23,14 @@ namespace ApiNgMovies
             return _generos;
         }
 
-        public Genero? ObtenerGeneroPorId(int id)
+        public async Task<Genero?> ObtenerGeneroPorId(int id)
         {
+            await Task.Delay(TimeSpan.FromSeconds(2));
             return _generos.FirstOrDefault(genero => genero.id == id);
         }
-        public Genero? ObtenerGeneroPorNombre(string nombre)
+        public async Task<Genero?> ObtenerGeneroPorNombre(string nombre)
         {
+            await Task.Delay(TimeSpan.FromSeconds(2));
             return _generos.FirstOrDefault(genero => genero.Nombre.ToLower().Equals(nombre.ToLower()));
         }
     }

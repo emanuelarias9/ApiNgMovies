@@ -15,10 +15,10 @@ namespace ApiNgMovies.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public ActionResult<Genero> Get(int id)
+        public async Task<ActionResult<Genero>> Get(int id)
         {
             var repositorio = new Memoria();
-            var genero = repositorio.ObtenerGeneroPorId(id);
+            var genero = await repositorio.ObtenerGeneroPorId(id);
             if (genero is null) {
                 return NotFound();
             }
@@ -26,10 +26,10 @@ namespace ApiNgMovies.Controllers
         }
         
         [HttpGet("{nombre}")]
-        public ActionResult<Genero> Get(string nombre)
+        public async Task<ActionResult<Genero>> Get(string nombre)
         {
             var repositorio = new Memoria();
-            var genero = repositorio.ObtenerGeneroPorNombre(nombre);
+            var genero = await repositorio.ObtenerGeneroPorNombre(nombre);
             if (genero is null)
             {
                 return NotFound();
