@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.OutputCaching;
 namespace ApiNgMovies.Controllers
 {
     [Route("api/[controller]")]
+    [ApiController]
     public class GenerosController : ControllerBase
     {
         [HttpGet]
@@ -39,6 +40,12 @@ namespace ApiNgMovies.Controllers
                 return NotFound();
             }
             return genero;
+        }
+
+        [HttpPost]
+        public void Post([FromBody] Genero genero) 
+        {
+
         }
     }
 }
