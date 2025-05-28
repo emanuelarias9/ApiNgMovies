@@ -10,12 +10,12 @@ namespace ApiNgMovies
         {
             _generos = new List<Genero>
             {
-                new Genero{ id= 1, Nombre= "Acción" },
-                new Genero{ id= 2, Nombre= "Comedia" },
-                new Genero{ id= 3, Nombre= "Drama" },
-                new Genero{ id= 4, Nombre= "Terror" },
-                new Genero{ id= 5, Nombre= "Ciencia Ficción" },
-                new Genero{ id= 6, Nombre= "Romance" },
+                new Genero{ Id= 1, Nombre= "Acción" },
+                new Genero{ Id= 2, Nombre= "Comedia" },
+                new Genero{ Id= 3, Nombre= "Drama" },
+                new Genero{ Id= 4, Nombre= "Terror" },
+                new Genero{ Id= 5, Nombre= "Ciencia Ficción" },
+                new Genero{ Id= 6, Nombre= "Romance" },
             };
         }
 
@@ -26,7 +26,7 @@ namespace ApiNgMovies
         public async Task<Genero?> ObtenerGeneroPorId(int id)
         {
             await Task.Delay(TimeSpan.FromSeconds(2));
-            return _generos.FirstOrDefault(genero => genero.id == id);
+            return _generos.FirstOrDefault(genero => genero.Id == id);
         }
         public async Task<Genero?> ObtenerGeneroPorNombre(string nombre)
         {
