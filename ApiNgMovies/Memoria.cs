@@ -28,6 +28,12 @@ namespace ApiNgMovies
             await Task.Delay(TimeSpan.FromSeconds(2));
             return _generos.FirstOrDefault(genero => genero.Id == id);
         }
+
+        public bool Existe(string nombre) 
+        { 
+            return _generos.Any(genero => genero.Nombre == nombre);
+        }
+
         public async Task<Genero?> ObtenerGeneroPorNombre(string nombre)
         {
             await Task.Delay(TimeSpan.FromSeconds(2));

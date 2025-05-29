@@ -43,9 +43,15 @@ namespace ApiNgMovies.Controllers
         }
 
         [HttpPost]
-        public void Post([FromBody] Genero genero) 
+        public ActionResult Post([FromBody] Genero genero) 
         {
-
+            var repositorio = new Memoria();
+            var existe = repositorio.Existe(genero.Nombre);
+            if (existe)
+            {
+                return BadRequest($"Ya existe un genero con el nombre {genero.Nombre}");
+            }
+            return Ok();
         }
     }
 }
