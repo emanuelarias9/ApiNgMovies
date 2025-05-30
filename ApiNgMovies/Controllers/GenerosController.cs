@@ -8,11 +8,17 @@ namespace ApiNgMovies.Controllers
     [ApiController]
     public class GenerosController : ControllerBase
     {
+        private readonly IMemoria repositorio;
+
+        public GenerosController(IMemoria repositorio)
+        {
+            this.repositorio = repositorio;
+        }
+
         [HttpGet]
         [OutputCache]
         public List<Genero> Get()
         {
-            var repositorio = new Memoria();
             var generos= repositorio.ListadoGeneros();
             return generos;
         }
@@ -21,7 +27,6 @@ namespace ApiNgMovies.Controllers
         [OutputCache]
         public async Task<ActionResult<Genero>> Get(int id)
         {
-            var repositorio = new Memoria();
             var genero = await repositorio.ObtenerGeneroPorId(id);
             if (genero is null) {
                 return NotFound();
@@ -33,7 +38,6 @@ namespace ApiNgMovies.Controllers
         [OutputCache]
         public async Task<ActionResult<Genero>> Get(string nombre)
         {
-            var repositorio = new Memoria();
             var genero = await repositorio.ObtenerGeneroPorNombre(nombre);
             if (genero is null)
             {
@@ -45,7 +49,6 @@ namespace ApiNgMovies.Controllers
         [HttpPost]
         public ActionResult Post([FromBody] Genero genero) 
         {
-            var repositorio = new Memoria();
             var existe = repositorio.Existe(genero.Nombre);
             if (existe)
             {

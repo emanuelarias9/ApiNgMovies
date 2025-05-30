@@ -2,7 +2,7 @@
 
 namespace ApiNgMovies
 {
-    public class Memoria
+    public class Memoria : IMemoria
     {
         private List<Genero> _generos;
 
