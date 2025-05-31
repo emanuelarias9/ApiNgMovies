@@ -8,5 +8,6 @@ namespace ApiNgMovies
         Task<Genero?> ObtenerGeneroPorId(int id);
         bool Existe(string nombre);
         Task<Genero?> ObtenerGeneroPorNombre(string nombre);
+        void Crear(Genero genero);
     }
 }

@@ -9,14 +9,16 @@ namespace ApiNgMovies.Controllers
     public class GenerosController : ControllerBase
     {
         private readonly IMemoria repositorio;
-
-        public GenerosController(IMemoria repositorio)
+        private readonly IOutputCacheStore outputCacheStore;
+        private const string cacheGeneroTag = "genero";
+        public GenerosController(IMemoria repositorio,IOutputCacheStore outputCacheStore)
         {
             this.repositorio = repositorio;
+            this.outputCacheStore = outputCacheStore;
         }
 
         [HttpGet]
-        [OutputCache]
+        [OutputCache(Tags = [cacheGeneroTag])]
         public List<Genero> Get()
         {
             var generos= repositorio.ListadoGeneros();
@@ -24,7 +26,7 @@ namespace ApiNgMovies.Controllers
         }
 
         [HttpGet("{id:int}")]
-        [OutputCache]
+        [OutputCache(Tags = [cacheGeneroTag])]
         public async Task<ActionResult<Genero>> Get(int id)
         {
             var genero = await repositorio.ObtenerGeneroPorId(id);
@@ -47,13 +49,16 @@ namespace ApiNgMovies.Controllers
         }
 
         [HttpPost]
-        public ActionResult Post([FromBody] Genero genero) 
+        public async Task<ActionResult> Post([FromBody] Genero genero) 
         {
             var existe = repositorio.Existe(genero.Nombre);
             if (existe)
             {
                 return BadRequest($"Ya existe un genero con el nombre {genero.Nombre}");
             }
+
+            repositorio.Crear(genero);
+            await outputCacheStore.EvictByTagAsync(cacheGeneroTag, default);
             return Ok();
         }
     }

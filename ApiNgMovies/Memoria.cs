@@ -23,6 +23,10 @@ namespace ApiNgMovies
             return _generos;
         }
 
+        public void Crear(Genero genero) {
+            _generos.Add(genero);
+        }
+
         public async Task<Genero?> ObtenerGeneroPorId(int id)
         {
             await Task.Delay(TimeSpan.FromSeconds(2));
