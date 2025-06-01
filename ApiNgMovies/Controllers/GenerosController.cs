@@ -10,11 +10,19 @@ namespace ApiNgMovies.Controllers
     {
         private readonly IMemoria repositorio;
         private readonly IOutputCacheStore outputCacheStore;
+        private readonly IConfiguration configuration;
         private const string cacheGeneroTag = "genero";
-        public GenerosController(IMemoria repositorio,IOutputCacheStore outputCacheStore)
+        public GenerosController(IMemoria repositorio,IOutputCacheStore outputCacheStore,IConfiguration configuration)
         {
             this.repositorio = repositorio;
             this.outputCacheStore = outputCacheStore;
+            this.configuration = configuration;
+        }
+
+        [HttpGet("conexion")]
+        public string GetConexion()
+        {
+            return configuration.GetValue<string>("Conexion")!;
         }
 
         [HttpGet]
