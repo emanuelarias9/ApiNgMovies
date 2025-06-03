@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ApiNgMovies.Entidades;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiNgMovies
 {
@@ -11,5 +12,7 @@ namespace ApiNgMovies
         protected AppDbContext()
         {
         }
+
+        public DbSet<Genero> Genero { get; set; }
     }
 }
