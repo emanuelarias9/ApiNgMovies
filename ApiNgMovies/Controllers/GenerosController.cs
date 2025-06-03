@@ -9,10 +9,13 @@ namespace ApiNgMovies.Controllers
     public class GenerosController : ControllerBase
     {
         private readonly IOutputCacheStore outputCacheStore;
+        private readonly AppDbContext context;
         private const string cacheGeneroTag = "genero";
-        public GenerosController(IOutputCacheStore outputCacheStore)
+
+        public GenerosController(IOutputCacheStore outputCacheStore, AppDbContext context)
         {
             this.outputCacheStore = outputCacheStore;
+            this.context = context;
         }
 
         [HttpGet]
@@ -26,7 +29,7 @@ namespace ApiNgMovies.Controllers
             };
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id:int}", Name = "ObtenerGenero")]
         [OutputCache(Tags = [cacheGeneroTag])]
         public async Task<ActionResult<Genero>> Get(int id)
         {
@@ -43,7 +46,9 @@ namespace ApiNgMovies.Controllers
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] Genero genero) 
         {
-            throw new NotImplementedException();
+            context.Add(genero);
+            await context.SaveChangesAsync();
+            return CreatedAtRoute("ObtenerGenero", new { id = genero.Id }, genero);
         }
     }
 }
