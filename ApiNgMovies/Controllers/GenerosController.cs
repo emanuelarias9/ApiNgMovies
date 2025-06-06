@@ -1,8 +1,10 @@
 ﻿using ApiNgMovies.DTOs;
 using ApiNgMovies.Entidades;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiNgMovies.Controllers
 {
@@ -24,13 +26,9 @@ namespace ApiNgMovies.Controllers
 
         [HttpGet]
         [OutputCache(Tags = [cacheGeneroTag])]
-        public List<GeneroDTO> Get()
+        public async Task<List<GeneroDTO>> Get()
         {
-            return new List<GeneroDTO>() { 
-                new GeneroDTO{ Id= 1, Nombre= "Acción" },
-                new GeneroDTO{ Id= 2, Nombre= "Comedia" },
-                new GeneroDTO{ Id= 3, Nombre= "Terror" }
-            };
+            return await context.Genero.ProjectTo<GeneroDTO>(mapper.ConfigurationProvider).ToListAsync();
         }
 
         [HttpGet("{id:int}", Name = "ObtenerGenero")]
