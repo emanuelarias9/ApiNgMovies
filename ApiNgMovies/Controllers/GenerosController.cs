@@ -1,5 +1,6 @@
 ﻿using ApiNgMovies.DTOs;
 using ApiNgMovies.Entidades;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
 
@@ -11,12 +12,14 @@ namespace ApiNgMovies.Controllers
     {
         private readonly IOutputCacheStore outputCacheStore;
         private readonly AppDbContext context;
+        private readonly IMapper mapper;
         private const string cacheGeneroTag = "genero";
 
-        public GenerosController(IOutputCacheStore outputCacheStore, AppDbContext context)
+        public GenerosController(IOutputCacheStore outputCacheStore, AppDbContext context,IMapper mapper)
         {
             this.outputCacheStore = outputCacheStore;
             this.context = context;
+            this.mapper = mapper;
         }
 
         [HttpGet]
@@ -47,10 +50,7 @@ namespace ApiNgMovies.Controllers
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] CrearGeneroDTO CrearGeneroDTO) 
         {
-            var genero = new Genero
-            {
-                Nombre = CrearGeneroDTO.Nombre
-            };
+            var genero = mapper.Map<Genero>(CrearGeneroDTO);
             context.Add(genero);
             await context.SaveChangesAsync();
             return CreatedAtRoute("ObtenerGenero", new { id = genero.Id }, genero);
