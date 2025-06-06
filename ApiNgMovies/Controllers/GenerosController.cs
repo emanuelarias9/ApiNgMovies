@@ -1,4 +1,5 @@
-﻿using ApiNgMovies.Entidades;
+﻿using ApiNgMovies.DTOs;
+using ApiNgMovies.Entidades;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
 
@@ -20,32 +21,36 @@ namespace ApiNgMovies.Controllers
 
         [HttpGet]
         [OutputCache(Tags = [cacheGeneroTag])]
-        public List<Genero> Get()
+        public List<GeneroDTO> Get()
         {
-            return new List<Genero>() { 
-                new Genero{ Id= 1, Nombre= "Acción" },
-                new Genero{ Id= 2, Nombre= "Comedia" },
-                new Genero{ Id= 3, Nombre= "Terror" }
+            return new List<GeneroDTO>() { 
+                new GeneroDTO{ Id= 1, Nombre= "Acción" },
+                new GeneroDTO{ Id= 2, Nombre= "Comedia" },
+                new GeneroDTO{ Id= 3, Nombre= "Terror" }
             };
         }
 
         [HttpGet("{id:int}", Name = "ObtenerGenero")]
         [OutputCache(Tags = [cacheGeneroTag])]
-        public async Task<ActionResult<Genero>> Get(int id)
+        public async Task<ActionResult<GeneroDTO>> Get(int id)
         {
             throw new NotImplementedException();
         }
         
         [HttpGet("{nombre}")]
         [OutputCache]
-        public async Task<ActionResult<Genero>> Get(string nombre)
+        public async Task<ActionResult<GeneroDTO>> Get(string nombre)
         {
             throw new NotImplementedException();
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] Genero genero) 
+        public async Task<ActionResult> Post([FromBody] CrearGeneroDTO CrearGeneroDTO) 
         {
+            var genero = new Genero
+            {
+                Nombre = CrearGeneroDTO.Nombre
+            };
             context.Add(genero);
             await context.SaveChangesAsync();
             return CreatedAtRoute("ObtenerGenero", new { id = genero.Id }, genero);
