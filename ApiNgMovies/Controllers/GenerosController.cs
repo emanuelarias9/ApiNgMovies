@@ -1,5 +1,6 @@
 ﻿using ApiNgMovies.DTOs;
 using ApiNgMovies.Entidades;
+using ApiNgMovies.Utilitario;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Mvc;
@@ -26,9 +27,12 @@ namespace ApiNgMovies.Controllers
 
         [HttpGet]
         [OutputCache(Tags = [cacheGeneroTag])]
-        public async Task<List<GeneroDTO>> Get()
+        public async Task<List<GeneroDTO>> Get([FromQuery] PaginacionDTO paginacion)
         {
-            return await context.Genero.ProjectTo<GeneroDTO>(mapper.ConfigurationProvider).ToListAsync();
+            await HttpContext.ParametrosPaginacion(context.Genero);
+            return await context.Genero
+                .Paginar(paginacion)
+                .ProjectTo<GeneroDTO>(mapper.ConfigurationProvider).ToListAsync();
         }
 
         [HttpGet("{id:int}", Name = "ObtenerGenero")]

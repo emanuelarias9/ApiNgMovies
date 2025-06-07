@@ -23,10 +23,16 @@ builder.Services.AddOutputCache(options =>
 
 var origenesPermitidos = builder.Configuration.GetValue<string>("origenesPermitidos")!.Split(",");
 
-builder.Services.AddCors(options => {
-    options.AddDefaultPolicy(cors => { 
-        cors.WithOrigins(origenesPermitidos).AllowAnyMethod().AllowAnyHeader();});
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(cors =>
+    {
+        cors.WithOrigins(origenesPermitidos)
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .WithExposedHeaders("cantidadRegistros"); 
     });
+});
 
 var app = builder.Build();
 
