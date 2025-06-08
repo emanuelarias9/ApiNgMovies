@@ -31,6 +31,7 @@ namespace ApiNgMovies.Controllers
         {
             await HttpContext.ParametrosPaginacion(context.Genero);
             return await context.Genero
+                .OrderBy(g => g.Nombre)
                 .Paginar(paginacion)
                 .ProjectTo<GeneroDTO>(mapper.ConfigurationProvider).ToListAsync();
         }
