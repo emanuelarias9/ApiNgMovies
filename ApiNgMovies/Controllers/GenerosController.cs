@@ -84,5 +84,19 @@ namespace ApiNgMovies.Controllers
             await outputCacheStore.EvictByTagAsync(cacheGeneroTag, default);
             return NoContent();
         }
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var deletedRecords = await context.Genero.Where(g => g.Id == id).ExecuteDeleteAsync();
+
+            if (deletedRecords==0)
+            {
+                return NotFound();
+            }
+
+            await outputCacheStore.EvictByTagAsync(cacheGeneroTag, default);
+            return NoContent();
+        }
     }
 }
