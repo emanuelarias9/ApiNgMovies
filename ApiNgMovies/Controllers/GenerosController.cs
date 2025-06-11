@@ -3,6 +3,7 @@ using ApiNgMovies.Entidades;
 using ApiNgMovies.Utilitario;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.EntityFrameworkCore;
@@ -40,7 +41,15 @@ namespace ApiNgMovies.Controllers
         [OutputCache(Tags = [cacheGeneroTag])]
         public async Task<ActionResult<GeneroDTO>> Get(int id)
         {
-            throw new NotImplementedException();
+            var genero = await context.Genero
+                .ProjectTo<GeneroDTO>(mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync(g=>g.Id == id);
+            if (genero is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(genero);
         }
         
         [HttpGet("{nombre}")]
@@ -56,7 +65,24 @@ namespace ApiNgMovies.Controllers
             var genero = mapper.Map<Genero>(CrearGeneroDTO);
             context.Add(genero);
             await context.SaveChangesAsync();
+            await outputCacheStore.EvictByTagAsync(cacheGeneroTag, default);
             return CreatedAtRoute("ObtenerGenero", new { id = genero.Id }, genero);
+        }
+
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> Put(int id, [FromBody] CrearGeneroDTO crearGeneroDTO)
+        {
+            var existeGenero = await context.Genero.AnyAsync(g=>g.Id==id);
+            if (!existeGenero)
+            {
+                return NotFound();
+            }
+            var genero = mapper.Map<Genero>(crearGeneroDTO);
+            genero.Id = id;
+            context.Update(genero);
+            await context.SaveChangesAsync();
+            await outputCacheStore.EvictByTagAsync(cacheGeneroTag, default);
+            return NoContent();
         }
     }
 }
