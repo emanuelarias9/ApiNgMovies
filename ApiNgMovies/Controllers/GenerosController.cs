@@ -1,4 +1,5 @@
 ﻿using ApiNgMovies.DTOs;
+using ApiNgMovies.DTOs.Genero;
 using ApiNgMovies.Entidades;
 using ApiNgMovies.Utilitario;
 using AutoMapper;
@@ -28,21 +29,21 @@ namespace ApiNgMovies.Controllers
 
         [HttpGet]
         [OutputCache(Tags = [cacheGeneroTag])]
-        public async Task<List<GeneroDTO>> Get([FromQuery] PaginacionDTO paginacion)
+        public async Task<List<ActorDTO>> Get([FromQuery] PaginacionDTO paginacion)
         {
             await HttpContext.ParametrosPaginacion(context.Genero);
             return await context.Genero
                 .OrderBy(g => g.Nombre)
                 .Paginar(paginacion)
-                .ProjectTo<GeneroDTO>(mapper.ConfigurationProvider).ToListAsync();
+                .ProjectTo<ActorDTO>(mapper.ConfigurationProvider).ToListAsync();
         }
 
         [HttpGet("{id:int}", Name = "ObtenerGenero")]
         [OutputCache(Tags = [cacheGeneroTag])]
-        public async Task<ActionResult<GeneroDTO>> Get(int id)
+        public async Task<ActionResult<ActorDTO>> Get(int id)
         {
             var genero = await context.Genero
-                .ProjectTo<GeneroDTO>(mapper.ConfigurationProvider)
+                .ProjectTo<ActorDTO>(mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync(g=>g.Id == id);
             if (genero is null)
             {
@@ -54,7 +55,7 @@ namespace ApiNgMovies.Controllers
         
         [HttpGet("{nombre}")]
         [OutputCache]
-        public async Task<ActionResult<GeneroDTO>> Get(string nombre)
+        public async Task<ActionResult<ActorDTO>> Get(string nombre)
         {
             throw new NotImplementedException();
         }

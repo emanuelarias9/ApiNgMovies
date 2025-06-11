@@ -1,6 +1,6 @@
-﻿namespace ApiNgMovies.DTOs
+﻿namespace ApiNgMovies.DTOs.Genero
 {
-    public class GeneroDTO
+    public class ActorDTO
     {
         public int Id { get; set; }
         public required string Nombre { get; set; }

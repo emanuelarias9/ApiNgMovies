@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using ApiNgMovies.Validaciones;
 
-namespace ApiNgMovies.DTOs
+namespace ApiNgMovies.DTOs.Genero
 {
     public class CrearGeneroDTO
     {
