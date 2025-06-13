@@ -1,6 +1,7 @@
 ﻿using ApiNgMovies.DTOs.Actor;
 using ApiNgMovies.DTOs.Genero;
 using ApiNgMovies.Entidades;
+using ApiNgMovies.Servicios;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Mvc;
@@ -16,13 +17,16 @@ namespace ApiNgMovies.Controllers
         private readonly AppDbContext context;
         private readonly IMapper mapper;
         private readonly IOutputCacheStore outputCacheStore;
+        private readonly IStorage storage;
         private const string cacheActorTag = "actor";
+        private readonly string contenedor = "actores";
 
-        public ActoresController(AppDbContext context, IMapper mapper, IOutputCacheStore outputCacheStore)
+        public ActoresController(AppDbContext context, IMapper mapper, IOutputCacheStore outputCacheStore,IStorage storage)
         {
             this.context = context;
             this.mapper = mapper;
             this.outputCacheStore = outputCacheStore;
+            this.storage = storage;
         }
 
         [HttpGet("{id:int}", Name = "ObtenerActor")]
@@ -44,6 +48,13 @@ namespace ApiNgMovies.Controllers
         public async Task<ActionResult> Post([FromForm] CrearActorDTO crearActorDTO)
         {
             var actor = mapper.Map<Actor>(crearActorDTO);
+
+            if (crearActorDTO.Imagen is not null)
+            {
+                actor.Imagen = await storage.Save(contenedor, crearActorDTO.Imagen);
+
+            }
+
             context.Actor.Add(actor);
             await context.SaveChangesAsync();
             await outputCacheStore.EvictByTagAsync(cacheActorTag,default);
