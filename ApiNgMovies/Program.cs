@@ -1,4 +1,5 @@
 using ApiNgMovies;
+using ApiNgMovies.Servicios;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +24,9 @@ builder.Services.AddOutputCache(options =>
 
 var origenesPermitidos = builder.Configuration.GetValue<string>("origenesPermitidos")!.Split(",");
 
+builder.Services.AddTransient<IStorage, LocalStorage>();
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(cors =>
@@ -46,6 +50,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseOutputCache();
+
+app.UseStaticFiles();
 
 app.UseCors();
 
