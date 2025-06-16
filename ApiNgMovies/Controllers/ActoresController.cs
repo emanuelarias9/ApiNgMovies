@@ -1,7 +1,9 @@
-﻿using ApiNgMovies.DTOs.Actor;
+﻿using ApiNgMovies.DTOs;
+using ApiNgMovies.DTOs.Actor;
 using ApiNgMovies.DTOs.Genero;
 using ApiNgMovies.Entidades;
 using ApiNgMovies.Servicios;
+using ApiNgMovies.Utilitario;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +29,18 @@ namespace ApiNgMovies.Controllers
             this.mapper = mapper;
             this.outputCacheStore = outputCacheStore;
             this.storage = storage;
+        }
+
+        [HttpGet]
+        [OutputCache(Tags = [cacheActorTag])]
+        public async Task<List<ActorDTO>> Get([FromQuery] PaginacionDTO paginacion)
+        {
+            var queryable = context.Actor;
+            await HttpContext.ParametrosPaginacion(queryable);
+            return await queryable.OrderBy(a=>a.Nombre)
+                .Paginar(paginacion)
+                .ProjectTo<ActorDTO>(mapper.ConfigurationProvider)
+                .ToListAsync();
         }
 
         [HttpGet("{id:int}", Name = "ObtenerActor")]

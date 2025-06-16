@@ -16,6 +16,7 @@ namespace ApiNgMovies.Utilitario
         {
             CreateMap<CrearActorDTO, Actor>()
                 .ForMember(a => a.Imagen, opt => opt.Ignore());
+            CreateMap<Actor, ActorDTO>();
         }
 
         private void MapeoGenero() {
