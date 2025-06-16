@@ -75,6 +75,25 @@ namespace ApiNgMovies.Controllers
             return CreatedAtRoute("ObtenerActor", new { id = actor.Id }, actor);
         }
 
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> Put(int id, [FromForm] CrearActorDTO crearActorDTO) 
+        { 
+        
+            var actor = await context.Actor.FirstOrDefaultAsync(a => a.Id == id);
+            if (actor is null)
+            {
+                return NotFound();
+            }
+
+            actor = mapper.Map(crearActorDTO, actor);
+            if (crearActorDTO.Imagen is not null)
+            {
+                actor.Imagen = await storage.Update(actor.Imagen, contenedor, crearActorDTO.Imagen);
+            }
+            await context.SaveChangesAsync();
+            await outputCacheStore.EvictByTagAsync(cacheActorTag, default);
+            return Ok(actor);
+        }
 
     }
 }
