@@ -97,7 +97,7 @@ namespace ApiNgMovies.Controllers
             }
 
             await outputCacheStore.EvictByTagAsync(cacheGeneroTag, default);
-            return NoContent();
+            return Ok();
         }
     }
 }

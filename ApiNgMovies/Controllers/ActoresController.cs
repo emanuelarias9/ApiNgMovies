@@ -95,5 +95,19 @@ namespace ApiNgMovies.Controllers
             return Ok(actor);
         }
 
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var deletedRecords = await context.Actor.Where(a => a.Id == id).ExecuteDeleteAsync();
+
+            if (deletedRecords == 0)
+            {
+                return NotFound();
+            }
+
+            await outputCacheStore.EvictByTagAsync(cacheActorTag, default);
+            return Ok();
+        }
+
     }
 }
