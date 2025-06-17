@@ -21,7 +21,7 @@ namespace ApiNgMovies.Utilitario
 
         private void MapeoGenero() {
             CreateMap<CrearGeneroDTO, Genero>();
-            CreateMap<Genero, ActorDTO>();
+            CreateMap<Genero, GeneroDTO>();
         }
     }
 }
