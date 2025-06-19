@@ -2,12 +2,13 @@
 using ApiNgMovies.DTOs.Genero;
 using ApiNgMovies.Entidades;
 using AutoMapper;
+using NetTopologySuite.Geometries;
 
 namespace ApiNgMovies.Utilitario
 {
     public class AutoMapperProfiles:Profile
     {
-        public AutoMapperProfiles()
+        public AutoMapperProfiles(GeometryFactory geometryFactory)
         {
             MapeoGenero();
             MapeoActor();

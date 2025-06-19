@@ -15,5 +15,6 @@ namespace ApiNgMovies
 
         public DbSet<Genero> Genero { get; set; }
         public DbSet<Actor> Actor { get; set; }
+        public DbSet<Cine> Cine { get; set; }
     }
 }
