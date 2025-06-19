@@ -61,9 +61,9 @@ namespace ApiNgMovies.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] CrearGeneroDTO CrearGeneroDTO) 
+        public async Task<ActionResult> Post([FromBody] CrearGeneroDTO crearGeneroDTO) 
         {
-            var genero = mapper.Map<Genero>(CrearGeneroDTO);
+            var genero = mapper.Map<Genero>(crearGeneroDTO);
             context.Add(genero);
             await context.SaveChangesAsync();
             await outputCacheStore.EvictByTagAsync(cacheGeneroTag, default);
@@ -83,7 +83,7 @@ namespace ApiNgMovies.Controllers
             context.Update(genero);
             await context.SaveChangesAsync();
             await outputCacheStore.EvictByTagAsync(cacheGeneroTag, default);
-            return NoContent();
+            return Ok();
         }
 
         [HttpDelete("{id:int}")]
