@@ -11,6 +11,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ApiNgMovies.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class CinesController : ControllerBase
 
     {
@@ -30,7 +32,7 @@ namespace ApiNgMovies.Controllers
         [OutputCache(Tags = [cacheCineTag])]
         public async Task<List<CineDTO>> Get([FromQuery] PaginacionDTO paginacion)
         {
-            var queryable = context.Actor;
+            var queryable = context.Cine;
             await HttpContext.ParametrosPaginacion(queryable);
             return await queryable.OrderBy(a => a.Nombre)
                 .Paginar(paginacion)
