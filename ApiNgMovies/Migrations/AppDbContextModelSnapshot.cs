@@ -86,6 +86,174 @@ namespace ApiNgMovies.Migrations
 
                     b.ToTable("Genero");
                 });
+
+            modelBuilder.Entity("ApiNgMovies.Entidades.Pelicula", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("FechaEstreno")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ImagenUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Titulo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Trailer")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Pelicula");
+                });
+
+            modelBuilder.Entity("ApiNgMovies.Entidades.PeliculaActor", b =>
+                {
+                    b.Property<int>("PeliculaActorId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PeliculaActorId"));
+
+                    b.Property<int>("ActorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PeliculaId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Personaje")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("orden")
+                        .HasColumnType("int");
+
+                    b.HasKey("PeliculaActorId");
+
+                    b.HasIndex("ActorId");
+
+                    b.HasIndex("PeliculaId");
+
+                    b.ToTable("PeliculaActor");
+                });
+
+            modelBuilder.Entity("ApiNgMovies.Entidades.PeliculaCine", b =>
+                {
+                    b.Property<int>("PeliculaCineId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PeliculaCineId"));
+
+                    b.Property<int>("CineId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PeliculaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PeliculaCineId");
+
+                    b.HasIndex("CineId");
+
+                    b.HasIndex("PeliculaId");
+
+                    b.ToTable("PeliculaCine");
+                });
+
+            modelBuilder.Entity("ApiNgMovies.Entidades.PeliculaGenero", b =>
+                {
+                    b.Property<int>("PeliculaGeneroId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PeliculaGeneroId"));
+
+                    b.Property<int>("GeneroId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PeliculaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PeliculaGeneroId");
+
+                    b.HasIndex("GeneroId");
+
+                    b.HasIndex("PeliculaId");
+
+                    b.ToTable("PeliculaGenero");
+                });
+
+            modelBuilder.Entity("ApiNgMovies.Entidades.PeliculaActor", b =>
+                {
+                    b.HasOne("ApiNgMovies.Entidades.Actor", "Actor")
+                        .WithMany()
+                        .HasForeignKey("ActorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ApiNgMovies.Entidades.Pelicula", "Pelicula")
+                        .WithMany("PeliculaActores")
+                        .HasForeignKey("PeliculaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Actor");
+
+                    b.Navigation("Pelicula");
+                });
+
+            modelBuilder.Entity("ApiNgMovies.Entidades.PeliculaCine", b =>
+                {
+                    b.HasOne("ApiNgMovies.Entidades.Cine", "Cine")
+                        .WithMany()
+                        .HasForeignKey("CineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ApiNgMovies.Entidades.Pelicula", "Pelicula")
+                        .WithMany("PeliculaCines")
+                        .HasForeignKey("PeliculaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cine");
+
+                    b.Navigation("Pelicula");
+                });
+
+            modelBuilder.Entity("ApiNgMovies.Entidades.PeliculaGenero", b =>
+                {
+                    b.HasOne("ApiNgMovies.Entidades.Genero", "Genero")
+                        .WithMany()
+                        .HasForeignKey("GeneroId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ApiNgMovies.Entidades.Pelicula", "Pelicula")
+                        .WithMany("PeliculaGeneros")
+                        .HasForeignKey("PeliculaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Genero");
+
+                    b.Navigation("Pelicula");
+                });
+
+            modelBuilder.Entity("ApiNgMovies.Entidades.Pelicula", b =>
+                {
+                    b.Navigation("PeliculaActores");
+
+                    b.Navigation("PeliculaCines");
+
+                    b.Navigation("PeliculaGeneros");
+                });
 #pragma warning restore 612, 618
         }
     }
