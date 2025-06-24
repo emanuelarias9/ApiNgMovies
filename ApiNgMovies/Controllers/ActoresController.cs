@@ -1,6 +1,5 @@
 ﻿using ApiNgMovies.DTOs;
 using ApiNgMovies.DTOs.Actor;
-using ApiNgMovies.DTOs.Genero;
 using ApiNgMovies.Entidades;
 using ApiNgMovies.Servicios;
 using ApiNgMovies.Utilitario;
