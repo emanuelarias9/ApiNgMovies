@@ -1,6 +1,7 @@
 ﻿using ApiNgMovies.DTOs.Actor;
 using ApiNgMovies.DTOs.Cine;
 using ApiNgMovies.DTOs.Genero;
+using ApiNgMovies.DTOs.Pelicula;
 using ApiNgMovies.Entidades;
 using AutoMapper;
 using NetTopologySuite.Geometries;
@@ -14,6 +15,18 @@ namespace ApiNgMovies.Utilitario
             MapeoGenero();
             MapeoActor();
             MapeoCine(geometryFactory);
+            MapeoPelicula();
+        }
+
+        private void MapeoPelicula()
+        {
+            CreateMap<CrearPeliculaDTO, Pelicula>()
+                .ForMember(p => p.ImagenUrl, opt => opt.Ignore())
+                .ForMember(p => p.PeliculaGeneros, dto => dto.MapFrom(x => x.GenerosIds!.Select(id => new PeliculaGenero { GeneroId = id })))
+                .ForMember(p => p.PeliculaCines, dto => dto.MapFrom(x => x.CinesIds!.Select(id => new PeliculaCine { CineId = id })))
+                .ForMember(p => p.PeliculaActores, dto => dto.MapFrom(x => x.Actores!.Select(actor => new PeliculaActor { ActorId = actor.Id,Personaje=actor.Personaje })));
+
+            CreateMap<Pelicula, PeliculaDTO>();
         }
 
         private void MapeoCine(GeometryFactory geometryFactory)
