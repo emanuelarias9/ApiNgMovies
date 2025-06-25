@@ -2,6 +2,7 @@
 using ApiNgMovies.DTOs.Cine;
 using ApiNgMovies.DTOs.Genero;
 using ApiNgMovies.DTOs.Pelicula;
+using ApiNgMovies.DTOs.PeliculaActor;
 using ApiNgMovies.Entidades;
 using AutoMapper;
 using NetTopologySuite.Geometries;
@@ -44,6 +45,7 @@ namespace ApiNgMovies.Utilitario
             CreateMap<CrearActorDTO, Actor>()
                 .ForMember(a => a.Imagen, opt => opt.Ignore());
             CreateMap<Actor, ActorDTO>();
+            CreateMap<Actor, PeliculaActorDTO>();
         }
 
         private void MapeoGenero() {

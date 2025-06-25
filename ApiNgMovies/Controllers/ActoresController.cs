@@ -1,5 +1,6 @@
 ﻿using ApiNgMovies.DTOs;
 using ApiNgMovies.DTOs.Actor;
+using ApiNgMovies.DTOs.PeliculaActor;
 using ApiNgMovies.Entidades;
 using ApiNgMovies.Servicios;
 using ApiNgMovies.Utilitario;
@@ -55,6 +56,21 @@ namespace ApiNgMovies.Controllers
             }
 
             return Ok(actor);
+        }
+
+        [HttpGet("{nombre}")]
+        public async Task<ActionResult<List<PeliculaActorDTO>>> Get(string nombre)
+        {
+            var peliculasActor = await context.Actor
+                .Where(pa => pa.Nombre.Contains(nombre))
+                .OrderBy(pa => pa.Nombre)
+                .ProjectTo<PeliculaActorDTO>(mapper.ConfigurationProvider)
+                .ToListAsync();
+            if (peliculasActor.Count == 0)
+            {
+                return NotFound();
+            }
+            return Ok(peliculasActor);
         }
 
         [HttpPost]
