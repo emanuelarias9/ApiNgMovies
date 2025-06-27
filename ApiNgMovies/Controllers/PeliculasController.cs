@@ -1,4 +1,5 @@
 ﻿using System;
+using ApiNgMovies.DTOs;
 using ApiNgMovies.DTOs.Cine;
 using ApiNgMovies.DTOs.Genero;
 using ApiNgMovies.DTOs.Pelicula;
@@ -29,6 +30,34 @@ namespace ApiNgMovies.Controllers
             this.mapper = mapper;
             this.outputCacheStore = outputCacheStore;
             this.storage = storage;
+        }
+
+        [HttpGet("LandingPage")]
+        public async Task<ActionResult<LandingPageDTO>> Get()
+        {
+            var top = 6;
+            var today = DateTime.Today;
+
+            var proximosEstrenos = await context.Pelicula
+                .Where(p => p.FechaEstreno > today)
+                .OrderBy(p => p.FechaEstreno)
+                .Take(top)
+                .ProjectTo<PeliculaDTO>(mapper.ConfigurationProvider)
+                .ToListAsync();
+
+            var enCines = await context.Pelicula
+                .Where(p => p.PeliculaCines.Select(pc => pc.PeliculaId).Contains(p.Id))
+                .OrderBy(p => p.FechaEstreno)
+                .Take(top)
+                .ProjectTo<PeliculaDTO>(mapper.ConfigurationProvider)
+                .ToListAsync();
+
+            var result = new LandingPageDTO
+            {
+                EnCines = enCines,
+                ProximosEstrenos = proximosEstrenos
+            };
+            return Ok(result);
         }
 
         [HttpGet("{id:int}", Name = "ObtenerPelicula")]
